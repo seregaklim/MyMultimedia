@@ -52,13 +52,6 @@ class MediaLifecycleObserver : LifecycleEventObserver {
         }
     }
 
-
-
-
-
-
-
-
 }
 
 

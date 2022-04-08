@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NMedia</string>
-    <string name="click_me">Click me</string>
+    <string name="albom">Альбом:</string>
+    <string name="executor">Исполнитель:</string>
 </resources>

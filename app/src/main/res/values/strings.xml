@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NMedia</string>
-    <string name="click_me">Click me</string>
+    <string name="albom">Albom:</string>
+    <string name="executor">Executor:</string>
+
+
 </resources>
