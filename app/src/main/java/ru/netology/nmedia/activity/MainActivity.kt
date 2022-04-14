@@ -28,33 +28,30 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = MusicAdapter(object : OnInteractionListener {
 
-
+            //запуск выбранного трека(старт)
             override fun onPlay(tracks: Tracks ) {
+                viewModel.playByMe(tracks.id)
+           }
 
-                if (tracks.playByMe == true) {
+            //ставим флажок, после проигрования трека назад
+            override fun onСanselNextByMe(tracks: Tracks) {
+                viewModel.canselNextByMe(tracks.id)
+            }
 
-                    //запуск следующего трека
-                    viewModel.playNextByMe(tracks.id)
-
-                    viewModel.canselNextByMe(tracks.id)
-
-
-                } else { //запуск следующего трека
-                    viewModel.playNextByMe(tracks.id)
-                }
+            //запуск следующего трека(круг)
+            override fun onNextPlay(tracks: Tracks ) {
 
             }
 
         })
 
         binding.list.adapter = adapter
-        viewModel.data.observe(this) { musics ->
-
+        viewModel.data.observe(this) {
+                musics ->
             musics.forEach { music ->
+              music.tracks.let { tracks ->
 
-                music.tracks.let { tracks ->
-
-                    adapter.submitList(tracks)
+                    adapter.submitList(music.tracks)
                 }
 
 

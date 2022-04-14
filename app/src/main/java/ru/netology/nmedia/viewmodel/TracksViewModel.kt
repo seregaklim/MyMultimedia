@@ -14,5 +14,9 @@ class TracksViewModel : ViewModel() {
     //запуск следующего трека
     fun playNextByMe(id: Long) = repository. playNextByMe(id)
 
+    //запуск выбранного трека
+    fun playByMe(id: Long) = repository. playByMe(id)
+
+    //востановление флага , после проигрования трека
     fun  canselNextByMe (id: Long)=repository.canselNextByMe(id)
 }

@@ -13,8 +13,13 @@ import ru.netology.nmedia.dto.Tracks
 
 
 interface OnInteractionListener {
-    //запуск следующего трека
+    //запуск выбранного трека
     fun onPlay(tracks: Tracks) {}
+   //запуск следующего трека
+    fun onNextPlay(tracks: Tracks ) {}
+    //ставим флажок, после проигрования трека назад
+    fun onСanselNextByMe(tracks:Tracks)
+
 }
 
 class MusicAdapter(
@@ -44,13 +49,10 @@ class MusicViewHolder(
 
         binding.apply {
 
-            tracks.let { track ->
-
                 musicTrack.text = tracks.musicTrack.toString()
 
-
                 //следующий трек +
-                if (tracks.playByMe == true) {
+                if (tracks.playByMe) {
 
                     binding.play.visibility = View.GONE
                     binding.pause.visibility = View.VISIBLE
@@ -66,63 +68,32 @@ class MusicViewHolder(
                             // окончание трека
                             setOnCompletionListener {
                                 //следующий трек +
-                                onInteractionListener.onPlay(tracks)
+                                onInteractionListener.onNextPlay(tracks)
+                                onInteractionListener.onСanselNextByMe(tracks)
                                 binding.play.visibility = View.VISIBLE
-                                binding.pause.visibility = View.GONE
+                               binding.pause.visibility = View.GONE
 
                             }
-
                             setDataSource(tracks.url) //мое воспроизведение
                             prepare()
-                            seekTo(currentPosition)
+                           seekTo(currentPosition)
                             start()
-                        }
-                    }
+                       } }
 
-                } else {
+               } else {
                     binding.play.visibility = View.VISIBLE
                     binding.pause.visibility = View.GONE
                 }
 
 
-                //проигрывать
+                //проигрывать выбранный трек (старт)
                 play.setOnClickListener {
-                    binding.play.visibility = View.GONE
-                    binding.pause.visibility = View.VISIBLE
 
-                    mediaObserver.apply {
-
-                        player?.apply {
-
-                            val currentPosition = currentPosition // сохраняем перед сбросом
-                            reset()
-
-                            // окончание трека
-                            setOnCompletionListener {
-
-                                //запуск следующего трека
-                                onInteractionListener.onPlay(tracks)
-                                binding.play.visibility = View.VISIBLE
-                                binding.pause.visibility = View.GONE
-
-
-                            }
-                            setDataSource(tracks.url) //мое воспроизведение
-                            prepare()
-                            seekTo(currentPosition)
-                            start()
-                        }
-                    }
-
-
-                }
-
+                    onInteractionListener.onPlay(tracks)
+      }
 
                 //пауза
                 pause.setOnClickListener {
-
-                    //  onInteractionListener.onPause(music)
-
 
                     mediaObserver.apply {
                         if (player != null) {
@@ -146,8 +117,6 @@ class MusicViewHolder(
             }
         }
     }
-}
-
 
 
 class MusicDiffCallback : DiffUtil.ItemCallback<Tracks>() {
@@ -159,3 +128,33 @@ class MusicDiffCallback : DiffUtil.ItemCallback<Tracks>() {
         return oldItem == newItem
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

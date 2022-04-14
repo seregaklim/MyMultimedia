@@ -1,21 +1,25 @@
 package ru.netology.nmedia.repository
 
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Music
 import ru.netology.nmedia.dto.Tracks
 
 
-class TracksRepositoryInMemoryImpl : TracksRepository {
+class TracksRepositoryInMemoryImpl() : TracksRepository {
     private var nextId = 0L
     private var musics = listOf (
         Music(
             id =1,
-            title="SoundHelix Songs",
+            title ="SoundHelix Songs",
             subtitle = "www.soundhelix.com",
             artist = "T. Schürger",
             published ="2009, 2010, 2011, 2013",
-            genre=  "electronic",
+            genre =  "electronic",
             tracks =listOf (
 
                 Tracks(
@@ -68,47 +72,121 @@ class TracksRepositoryInMemoryImpl : TracksRepository {
                     url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" ,
                     playByMe = false
                 )
+
             )
+            //.reversed()   //наоборот
         )
-    )  //.reversed()   //наоборот
+
+
+    )
+    //.reversed()   //наоборот
 
 
     private val data = MutableLiveData(musics)
 
+    constructor(parcel: Parcel) : this() {
+        nextId = parcel.readLong()
+    }
+
     override fun getAll(): LiveData<List<Music>> = data
 
+
+
     //запуск следующего трека
-    override fun   playNextByMe (id: Long) {
+    override fun playNextByMe(id: Long) {
+
 
         musics.forEach { music ->
-            music.tracks.let { tracks ->
+            music.tracks.let { track ->
+                track.forEach {
 
-                tracks.map {
+                    if (it.id >= id && it.id == id)
 
-                    if (it.id <= id) if (it.id +1 != id) it else it.copy(playByMe = !it.playByMe)
-                    else if (id * it.id - id != id) it else it.copy(playByMe = !it.playByMe)
+                        musics = musics.map { music ->
+                            music.copy(tracks = music.tracks.map { it ->
+
+                                if (id - it.id != id) it else it.copy(playByMe = !it.playByMe)
+
+
+                            })
+                        }
+
+                    else musics = musics.map { music ->
+                        music.copy(tracks = music.tracks.map { it ->
+
+                            if (it.id - 1 != id) it else it.copy(playByMe = !it.playByMe)
+
+                        })
+                    }
                 }
+
             }
         }
         data.value = musics
     }
-    //возврат в прежнее положение
-    override fun   canselNextByMe (id: Long) {
-        musics.forEach { music ->
-            music.tracks.let { tracks ->
 
-                tracks.map {
-                    if (it.id  != id) it else it.copy(playByMe = !it.playByMe)
-                }
-            }
+    //запуск следующего трека
+    override fun playByMe(id: Long) {
+
+        musics = musics.map { music ->
+            music.copy(tracks = music.tracks.map { it ->
+
+                if ( it.id != id) it else it.copy(playByMe = !it.playByMe)
+
+            })
+
         }
         data.value = musics
     }
 
+
+    //////возврат в прежнее положение флага
+    override fun  canselNextByMe (id: Long) {
+
+        musics = musics.map { music ->
+            music.copy(tracks = music.tracks.map { it ->
+
+                if ( it.id != id) it else it.copy(playByMe = !it.playByMe)
+
+            })
+
+        }
+        data.value = musics
+    }
 }
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+////запуск следующего трека
+//override fun playNextByMe(id: Long) {
+//    musics = musics.map { music ->
+//        music.copy(tracks = music.tracks.map {
+//            if (it.id <= id) if (it.id + 1 != id) it else it.copy(playByMe = !it.playByMe)
+//            else if (id * it.id - id != id) it else it.copy(playByMe = !it.playByMe)
+//        })
+//    }
+//    data.value = musics
+//}
 
