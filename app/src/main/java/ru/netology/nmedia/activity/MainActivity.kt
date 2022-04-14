@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
            }
 
             //ставим флажок, после проигрования трека назад
-            override fun onСanselNextByMe(tracks: Tracks) {
+            override fun onCanselNextByMe(tracks: Tracks) {
                 viewModel.canselNextByMe(tracks.id)
             }
 
@@ -76,7 +76,9 @@ class MainActivity : AppCompatActivity() {
                             published.text = music.published
                             genre.text = music.genre
 
+
                         }
+
                     }
                 }
             }

@@ -18,7 +18,7 @@ interface OnInteractionListener {
    //запуск следующего трека
     fun onNextPlay(tracks: Tracks ) {}
     //ставим флажок, после проигрования трека назад
-    fun onСanselNextByMe(tracks:Tracks)
+    fun onCanselNextByMe(tracks:Tracks)
 
 }
 
@@ -70,7 +70,7 @@ class MusicViewHolder(
                                 //следующий трек +
                                 onInteractionListener.onNextPlay(tracks)
                               //ставим флаг, после проигрования на место
-                                  onInteractionListener.onСanselNextByMe(tracks)
+                                  onInteractionListener.onCanselNextByMe(tracks)
                                 binding.play.visibility = View.VISIBLE
                                binding.pause.visibility = View.GONE
 
@@ -97,12 +97,11 @@ class MusicViewHolder(
                 pause.setOnClickListener {
 
                     mediaObserver.apply {
-                        if (player != null) {
-                            if (player!!.isPlaying()) {
-                                player!!.pause()
+                        player?.apply {
+                            if (isPlaying) {
+                                pause()
                             } else {
-                                player!!.getDuration();
-                                player!!.start();
+                                start()
                             }
                         }
                     }
@@ -113,7 +112,6 @@ class MusicViewHolder(
 
 
                 }
-
 
             }
         }
