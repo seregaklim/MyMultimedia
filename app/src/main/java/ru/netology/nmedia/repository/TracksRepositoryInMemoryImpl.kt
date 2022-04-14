@@ -125,7 +125,7 @@ class TracksRepositoryInMemoryImpl() : TracksRepository {
         data.value = musics
     }
 
-    //запуск следующего трека
+    //запуск выбранного трека
     override fun playByMe(id: Long) {
 
         musics = musics.map { music ->

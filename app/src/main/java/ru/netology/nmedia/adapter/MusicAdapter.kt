@@ -69,7 +69,8 @@ class MusicViewHolder(
                             setOnCompletionListener {
                                 //следующий трек +
                                 onInteractionListener.onNextPlay(tracks)
-                                onInteractionListener.onСanselNextByMe(tracks)
+                              //ставим флаг, после проигрования на место
+                                  onInteractionListener.onСanselNextByMe(tracks)
                                 binding.play.visibility = View.VISIBLE
                                binding.pause.visibility = View.GONE
 

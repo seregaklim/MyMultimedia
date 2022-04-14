@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
             //запуск следующего трека(круг)
             override fun onNextPlay(tracks: Tracks ) {
+                viewModel.playNextByMe(tracks.id)
 
             }
 
